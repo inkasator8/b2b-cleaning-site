@@ -1,11 +1,562 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>B2B Cleaning Site</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B2B Apartment-Reinigung Wien — Turnover Cleaning (DE/EN)</title>
+  <meta name="description" content="B2B Turnover Cleaning für Serviced Apartments & Kurzzeitvermietungen in Wien. Online-Buchung & Stripe-Zahlung, Kundenportal, iCal-Import, DSGVO-konform."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html,body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,'Helvetica Neue',Arial}
+    .glass{backdrop-filter: blur(14px); background: rgba(255,255,255,0.6)}
+    .card{border-radius:1.2rem}
+    .btn{transition:transform .08s ease, box-shadow .2s ease}
+    .btn:active{transform:translateY(1px)}
+    .ring-soft{box-shadow:0 0 0 8px rgba(16,185,129,.08)}
+    .hero-img{background-image:url('https://images.unsplash.com/photo-1603715749723-3184b6d0b2ae?q=80&w=2400&auto=format&fit=crop');}
+    .pattern{
+      background-image: radial-gradient(#11182711 1px, transparent 1px);
+      background-size: 12px 12px;
+    }
+    .blob{
+      position:absolute; width:52rem; height:52rem; filter:blur(60px); opacity:.25;
+      background: conic-gradient(from 90deg at 50% 50%, #10b981, #22d3ee, #a78bfa, #10b981);
+      border-radius:50%;
+      animation:spin 24s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+
+  <script>
+  // ===== CONFIG =====
+  window.APP_CONFIG = {
+    PAYMENT_LINK_URL: "", // Stripe Payment Link (z.B. https://buy.stripe.com/test_...)
+    COMPANY: {
+      name: "B2B Cleaning Wien GmbH",
+      street: "Musterstraße 12/3",
+      zipCity: "1010 Wien",
+      country: "Österreich",
+      uid: "ATU12345678",
+      email: "office@example.com",
+      phone: "+43 660 0000000"
+    }
+  };
+  </script>
 </head>
-<body>
-  <h1>Hello Codex 👋</h1>
-  <p>This is the initial version of the B2B Cleaning project.</p>
+<body class="bg-neutral-50 text-neutral-900 selection:bg-emerald-200/60">
+  <!-- NAV -->
+  <div class="sticky top-0 z-50 bg-white/70 backdrop-blur border-b border-black/5">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-8 w-8 rounded-xl bg-emerald-500 grid place-items-center text-white font-black">B</div>
+        <div class="font-extrabold tracking-tight">B2B Cleaning Wien</div>
+        <span class="hidden sm:inline text-xs text-neutral-500">Hotel-Standards · Versichert</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-5 text-sm">
+        <a href="#services" class="hover:text-emerald-700">Leistungen</a>
+        <a href="#pricing" class="hover:text-emerald-700">Preise</a>
+        <a href="#book" class="hover:text-emerald-700">Buchung</a>
+        <a href="#portal" class="hover:text-emerald-700">Kundenportal</a>
+        <a href="#ical" class="hover:text-emerald-700">iCal</a>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href="#book" class="btn inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-sm hover:shadow-md">
+          <span>📅</span> <span>Jetzt buchen</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="relative">
+    <div class="absolute inset-0 hero-img bg-cover bg-center"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/35 to-black/50"></div>
+    <div class="relative max-w-7xl mx-auto px-4 py-20 sm:py-28">
+      <div class="relative overflow-hidden glass card p-8 sm:p-12 shadow-xl ring-1 ring-black/5">
+        <div class="blob -top-40 -left-40"></div>
+        <h1 class="relative text-4xl sm:text-6xl font-extrabold leading-tight text-neutral-900 drop-shadow">
+          Turnover-Reinigung für Serviced Apartments — B2B in Wien
+        </h1>
+        <p class="relative mt-4 text-lg sm:text-xl text-neutral-800 max-w-3xl">
+          Speziell für Kurzzeitvermietungen (Airbnb, Booking, Serviced Apartments). Pünktlich, standardisiert, Foto-Protokoll & digitale Abnahme.
+        </p>
+        <div class="relative mt-6 flex flex-wrap gap-3">
+          <a href="#book" class="btn px-6 py-3 bg-neutral-900 hover:bg-black text-white rounded-2xl font-semibold shadow-sm hover:shadow-lg ring-soft">Jetzt buchen</a>
+          <a href="#portal" class="btn px-6 py-3 bg-white hover:bg-white/90 text-neutral-900 rounded-2xl font-semibold border border-black/10">Kundenportal</a>
+        </div>
+        <div class="relative mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+          <div class="bg-white/85 rounded-xl p-3 shadow-sm">✅ Versichert & geprüft</div>
+          <div class="bg-white/85 rounded-xl p-3 shadow-sm">✅ Turnover i.d.R. 2–4 Std.*</div>
+          <div class="bg-white/85 rounded-xl p-3 shadow-sm">✅ Eigene Mittel & Equipment</div>
+          <div class="bg-white/85 rounded-xl p-3 shadow-sm">✅ 24/7 Online-Buchung</div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- SERVICES -->
+  <section id="services" class="py-18 pattern">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center">
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Leistungen für Kurzzeitvermietung</h2>
+        <p class="mt-2 text-neutral-600">Turnover, Deep Clean, Restocking & Wäsche, Notfall-Einsätze.</p>
+      </div>
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card bg-white shadow-sm p-6 hover:shadow-md transition">
+          <div class="h-10 w-10 rounded-lg bg-emerald-100 grid place-items-center mb-3">🧽</div>
+          <h3 class="font-bold text-lg">Turnover Cleaning</h3>
+          <p class="text-sm text-neutral-600 mt-2">Check-out-Standard: Küche, Bad, Staub, Saugen/Wischen, Abfall, Betten beziehen.</p>
+        </div>
+        <div class="card bg-white shadow-sm p-6 hover:shadow-md transition">
+          <div class="h-10 w-10 rounded-lg bg-emerald-100 grid place-items-center mb-3">✨</div>
+          <h3 class="font-bold text-lg">Deep Cleaning</h3>
+          <p class="text-sm text-neutral-600 mt-2">Gründlich inkl. Fronten, Fugen, Geräte innen/außen (nach Bedarf).</p>
+        </div>
+        <div class="card bg-white shadow-sm p-6 hover:shadow-md transition">
+          <div class="h-10 w-10 rounded-lg bg-emerald-100 grid place-items-center mb-3">🧺</div>
+          <h3 class="font-bold text-lg">Wäsche & Restocking</h3>
+          <p class="text-sm text-neutral-600 mt-2">Bettwäsche/Handtücher, Verbrauchsmaterialien, optional Welcome-Pack.</p>
+        </div>
+        <div class="card bg-white shadow-sm p-6 hover:shadow-md transition">
+          <div class="h-10 w-10 rounded-lg bg-emerald-100 grid place-items-center mb-3">🚨</div>
+          <h3 class="font-bold text-lg">Notfall-Reinigung</h3>
+          <p class="text-sm text-neutral-600 mt-2">Schnelle Back-to-Back-Wechsel oder Vorfälle (nach Verfügbarkeit).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- B2B VALUE -->
+  <section id="b2b" class="py-20 bg-gradient-to-b from-white to-emerald-50/40">
+    <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-10 items-start">
+      <div class="card bg-white p-6 shadow-sm border border-black/5">
+        <h2 class="text-2xl sm:text-3xl font-extrabold">Für Eigentümer & Hausverwaltungen</h2>
+        <ul class="mt-5 space-y-3 text-neutral-800">
+          <li>• Kalender-Sync (Airbnb/Booking iCal) & automatische Turnovers</li>
+          <li>• Kundenportal: Einheiten, Status, Protokolle, Rechnungen</li>
+          <li>• Monatsabrechnung, UID, DSGVO-konform</li>
+          <li>• 60-Punkte-Checklisten, SLA-Zeitfenster, Key-Handling</li>
+        </ul>
+        <a href="#contact" class="mt-6 inline-flex px-5 py-3 rounded-xl bg-neutral-900 hover:bg-black text-white font-semibold">Angebot anfragen</a>
+      </div>
+      <div class="grid gap-6">
+        <div class="card bg-white p-6 shadow-sm border border-black/5">
+          <h3 class="font-bold text-lg">Beispiel-Checkliste (Auszug)</h3>
+          <div class="mt-3 grid sm:grid-cols-2 gap-3 text-sm text-neutral-700">
+            <div>✔︎ Vorher/Nachher-Foto pro Raum</div>
+            <div>✔︎ Betten frisch beziehen</div>
+            <div>✔︎ Küche: Flächen/Spüle, Geräte außen</div>
+            <div>✔︎ Bad: Armaturen, Glas, punktuell Fugen</div>
+            <div>✔︎ Böden: Saugen/Wischen</div>
+            <div>✔︎ Restocking: Papier, Seife, Kapseln, Wasser</div>
+          </div>
+        </div>
+        <div class="card bg-white p-6 shadow-sm border border-black/5">
+          <h3 class="font-bold text-lg">SLAs (Empfehlung)</h3>
+          <p class="text-sm text-neutral-700 mt-2">Back-to-Back-Fenster 3–4h, Notfall innerhalb 2h (verfüg.).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- PRICING + CALC -->
+  <section id="pricing" class="py-20 pattern">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center">
+        <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Preise & Kalkulator</h2>
+        <p class="mt-2 text-neutral-600">Transparente Orientierung. B2B-Monatsabrechnung möglich.</p>
+      </div>
+      <div class="mt-10 grid lg:grid-cols-2 gap-8">
+        <div class="card bg-white shadow-sm p-6 border border-black/5">
+          <form id="calc" class="grid sm:grid-cols-2 gap-4 text-sm">
+            <label class="flex flex-col">
+              <span class="font-medium">Anzahl Apartments</span>
+              <input type="number" id="units" min="1" value="10" class="mt-1 rounded-lg border px-3 py-2" />
+            </label>
+            <label class="flex flex-col">
+              <span class="font-medium">Ø Größe (m²)</span>
+              <input type="number" id="size" min="20" value="35" class="mt-1 rounded-lg border px-3 py-2" />
+            </label>
+            <label class="flex flex-col">
+              <span class="font-medium">Turnovers/Woche je Apt.</span>
+              <input type="number" id="turns" min="1" value="3" class="mt-1 rounded-lg border px-3 py-2" />
+            </label>
+            <label class="flex items-center gap-2 mt-6">
+              <input type="checkbox" id="linen" class="rounded" />
+              <span>Wäscheservice</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" id="restock" class="rounded" />
+              <span>Restocking</span>
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" id="deep" class="rounded" />
+              <span>+ Deep Turnover (20%)</span>
+            </label>
+            <div class="sm:col-span-2 mt-2">
+              <button type="button" id="calcBtn" class="btn px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-sm">Kalkulieren</button>
+            </div>
+          </form>
+        </div>
+        <div class="card bg-white shadow-sm p-6 border border-black/5">
+          <h3 class="font-bold text-lg">Unverbindliche Schätzung</h3>
+          <div id="est" class="mt-3 text-neutral-800">
+            <p>Apartments gesamt: <strong id="estUnits">10</strong></p>
+            <p>Turnovers pro Monat (≈): <strong id="estTurns">120</strong></p>
+            <p>Ø Preis pro Turnover (EUR): <strong id="estRate">48</strong></p>
+            <hr class="my-3"/>
+            <p class="text-xl font-extrabold">Monatlich (≈): <span id="estMonthly">€ 5.760</span></p>
+            <p class="text-sm text-neutral-500">* Abhängig von Lage, Zustand, Frequenz. Angebot auf Anfrage.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING + CONTACT -->
+  <section id="book" class="py-20 bg-gradient-to-b from-emerald-50/60 to-white">
+    <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-10 items-start">
+      <div class="card bg-white shadow-sm p-6 border border-black/5">
+        <h2 class="text-2xl sm:text-3xl font-extrabold">Online-Buchung & Zahlung</h2>
+        <p class="mt-2 text-neutral-600">Slot wählen & sicher via Stripe bezahlen. Rahmenverträge: Monatsrechnung (SEPA/Überweisung).</p>
+        <form id="bookingForm" class="mt-6 grid sm:grid-cols-2 gap-4 text-sm">
+          <label class="flex flex-col">
+            <span class="font-medium">Apartment (Bezeichnung)</span>
+            <input required id="bkUnit" class="mt-1 rounded-lg border px-3 py-2" placeholder="Top 12, 2.OG" />
+          </label>
+          <label class="flex flex-col">
+            <span class="font-medium">Größe (m²)</span>
+            <input required type="number" id="bkSize" min="20" class="mt-1 rounded-lg border px-3 py-2" placeholder="35" />
+          </label>
+          <label class="flex flex-col sm:col-span-2">
+            <span class="font-medium">Datum & Uhrzeit</span>
+            <input required id="bkDate" type="datetime-local" class="mt-1 rounded-lg border px-3 py-2" />
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" id="bkLinen" class="rounded" />
+            <span>Wäsche/Restocking</span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" id="bkDeep" class="rounded" />
+            <span>Deep Turnover</span>
+          </label>
+          <div class="sm:col-span-2">
+            <button type="submit" class="btn px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-sm">Termin buchen & bezahlen</button>
+            <p id="bkStatus" class="mt-2 text-sm text-emerald-700 hidden"></p>
+          </div>
+        </form>
+        <p class="mt-3 text-xs text-neutral-500">Payment Link in <code>APP_CONFIG.PAYMENT_LINK_URL</code> eintragen.</p>
+      </div>
+
+      <form id="contactForm" class="card bg-white shadow-sm p-6 border border-black/5">
+        <h3 class="font-bold text-lg">Kontakt & Angebotsanfrage</h3>
+        <div class="grid sm:grid-cols-2 gap-4 text-sm mt-3">
+          <label class="flex flex-col">
+            <span class="font-medium">Ihr Name</span>
+            <input required class="mt-1 rounded-lg border px-3 py-2" placeholder="Max Mustermann" />
+          </label>
+          <label class="flex flex-col">
+            <span class="font-medium">Firma</span>
+            <input class="mt-1 rounded-lg border px-3 py-2" placeholder="Muster GmbH" />
+          </label>
+          <label class="flex flex-col sm:col-span-2">
+            <span class="font-medium">E-Mail</span>
+            <input type="email" required class="mt-1 rounded-lg border px-3 py-2" placeholder="you@example.com" />
+          </label>
+          <label class="flex flex-col sm:col-span-2">
+            <span class="font-medium">Kurzbeschreibung (Anzahl Apts, Adresse, Frequenz)</span>
+            <textarea rows="4" class="mt-1 rounded-lg border px-3 py-2" placeholder="z. B. 12 Einheiten, 1070 Wien, 3 Turnovers/Woche je Apt."></textarea>
+          </label>
+          <div class="sm:col-span-2">
+            <button type="submit" class="btn w-full px-5 py-3 rounded-xl bg-neutral-900 hover:bg-black text-white font-semibold shadow-sm">Absenden</button>
+            <p id="contactStatus" class="mt-2 text-sm text-emerald-700 hidden">Vielen Dank! Wir melden uns kurzfristig.</p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  <!-- CLIENT PORTAL (minimal) -->
+  <section id="portal" class="py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center">
+        <h2 class="text-3xl sm:text-4xl font-extrabold">Kundenportal</h2>
+        <p class="mt-2 text-neutral-600">Demo-Login via Magic Link. Verwalten Sie Einheiten & sehen Sie Buchungen.</p>
+      </div>
+
+      <div class="mt-8 grid lg:grid-cols-3 gap-6">
+        <div id="portalAuth" class="card bg-white shadow-sm p-6 border border-black/5 max-w-xl">
+          <form id="loginForm" class="grid gap-3 text-sm">
+            <label class="flex flex-col">
+              <span class="font-medium">E-Mail</span>
+              <input id="plEmail" type="email" required class="mt-1 rounded-lg border px-3 py-2" placeholder="you@firma.at" />
+            </label>
+            <button class="btn px-5 py-3 rounded-xl bg-neutral-900 hover:bg-black text-white font-semibold">Magic Link senden</button>
+            <p id="loginMsg" class="text-sm text-emerald-700 hidden">Link gesendet (Demo): Klicken Sie unten auf „Jetzt anmelden“.</p>
+            <button id="demoLogin" type="button" class="btn px-4 py-2 rounded-lg border">Jetzt anmelden (Demo)</button>
+          </form>
+        </div>
+
+        <div id="portalApp" class="hidden lg:col-span-3 grid lg:grid-cols-3 gap-6">
+          <div class="card bg-white shadow-sm p-6 border border-black/5 lg:col-span-1">
+            <h3 class="font-bold">Meine Apartments</h3>
+            <ul id="unitList" class="mt-3 text-sm space-y-2"></ul>
+            <div class="mt-4 grid gap-2">
+              <input id="unitName" class="rounded-lg border px-3 py-2 text-sm" placeholder="z.B. Top 12" />
+              <button id="addUnit" class="btn px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-sm">Apartment hinzufügen</button>
+            </div>
+          </div>
+          <div class="card bg-white shadow-sm p-6 border border-black/5 lg:col-span-2">
+            <h3 class="font-bold">Buchungen</h3>
+            <div id="bookingList" class="mt-3 text-sm space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ICAL -->
+  <section id="ical" class="py-20 bg-gradient-to-b from-white to-emerald-50/50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center">
+        <h2 class="text-3xl sm:text-4xl font-extrabold">iCal-Integration (Import)</h2>
+        <p class="mt-2 text-neutral-600">Airbnb/Booking iCal-URL einfügen oder .ics hochladen — Turnovers werden erzeugt (Demo lokal).</p>
+      </div>
+      <div class="mt-8 grid gap-3 max-w-2xl mx-auto">
+        <input id="icalUrl" class="rounded-lg border px-3 py-2 text-sm" placeholder="https://.../calendar.ics" />
+        <div class="flex gap-2">
+          <button id="icalFetch" class="btn px-4 py-2 rounded-lg bg-neutral-900 hover:bg-black text-white text-sm">iCal-URL laden</button>
+          <label class="btn px-4 py-2 rounded-lg bg-white border text-sm cursor-pointer">
+            <input id="icalFile" type="file" accept=".ics" class="hidden" /> .ics hochladen
+          </label>
+        </div>
+        <div id="icalList" class="text-sm text-neutral-700"></div>
+      </div>
+    </div>
+  </section>
+  <!-- FOOTER -->
+  <footer class="py-16 bg-neutral-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
+      <div>
+        <h4 class="font-bold">B2B Cleaning Wien</h4>
+        <p class="mt-2 text-white/80">Partner für Apartment-Reinigung & Kurzzeitvermietungen</p>
+      </div>
+      <div>
+        <h4 class="font-bold">Links</h4>
+        <ul class="mt-2 space-y-1 text-white/80">
+          <li><a href="#services" class="hover:underline">Leistungen</a></li>
+          <li><a href="#b2b" class="hover:underline">B2B</a></li>
+          <li><a href="#pricing" class="hover:underline">Preise</a></li>
+          <li><a href="#book" class="hover:underline">Buchung</a></li>
+          <li><a href="#portal" class="hover:underline">Kundenportal</a></li>
+          <li><a href="#ical" class="hover:underline">iCal-Integration</a></li>
+          <li><a href="#contact" class="hover:underline">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold">Rechtliches</h4>
+        <p class="mt-2 text-white/80">
+          <a href="#" id="openImpressum" class="underline">Impressum</a> ·
+          <a href="#" id="openPrivacy" class="underline">Datenschutz</a> ·
+          <a href="#" id="openTerms" class="underline">AGB</a>
+        </p>
+      </div>
+      <div>
+        <h4 class="font-bold">Kontakt</h4>
+        <p class="mt-2 text-white/80">✉ <a class="underline" href="mailto:office@example.com">office@example.com</a><br/>☎ +43 660 0000000</p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 mt-8 text-xs text-white/60">© <span id="year"></span> B2B Cleaning Wien. Alle Rechte vorbehalten.</div>
+  </footer>
+
+  <!-- LEGAL MODALS -->
+  <div id="modalImpressum" class="hidden fixed inset-0 bg-black/50 items-center justify-center p-4">
+    <div class="card bg-white max-w-3xl w-full p-6">
+      <div class="flex justify-between items-center"><h3 class="font-bold text-lg">Impressum</h3><button onclick="closeModal('modalImpressum')">✕</button></div>
+      <div id="impressumContent" class="text-sm mt-3 whitespace-pre-wrap"></div>
+    </div>
+  </div>
+  <div id="modalPrivacy" class="hidden fixed inset-0 bg-black/50 items-center justify-center p-4">
+    <div class="card bg-white max-w-3xl w-full p-6">
+      <div class="flex justify-between items-center"><h3 class="font-bold text-lg">Datenschutzerklärung (DSGVO)</h3><button onclick="closeModal('modalPrivacy')">✕</button></div>
+      <div class="text-sm mt-3 space-y-3">
+        <p><strong>Verantwortlicher:</strong> <span data-company></span></p>
+        <p><strong>Zwecke:</strong> Vertragsabwicklung, Terminverwaltung (inkl. iCal-Import), Zahlungsabwicklung (Stripe), Kundenportal.</p>
+        <p><strong>Rechtsgrundlagen:</strong> Art 6 Abs 1 lit b/f, ggf. lit a DSGVO.</p>
+        <p><strong>Empfänger:</strong> Stripe Payments Europe SE; IT-/Hosting-Dienstleister.</p>
+        <p><strong>Speicherdauer:</strong> nach steuer-/unternehmensrechtlichen Fristen; Portaldaten bis Widerruf/Kündigung.</p>
+        <p><strong>Rechte:</strong> Auskunft, Berichtigung, Löschung, Einschränkung, Datenübertragbarkeit, Widerspruch; Beschwerde bei der DSG.</p>
+        <p><strong>Cookies:</strong> technisch notwendig; Analyse/Marketing nur mit Einwilligung.</p>
+      </div>
+    </div>
+  </div>
+  <div id="modalTerms" class="hidden fixed inset-0 bg-black/50 items-center justify-center p-4">
+    <div class="card bg-white max-w-3xl w-full p-6">
+      <div class="flex justify-between items-center"><h3 class="font-bold text-lg">Allgemeine Geschäftsbedingungen (Auszug)</h3><button onclick="closeModal('modalTerms')">✕</button></div>
+      <div class="text-sm mt-3 space-y-3">
+        <p><strong>Leistungsumfang:</strong> gemäß bestätigter Buchung/Angebot; Abweichungen bedürfen Schriftform.</p>
+        <p><strong>Preise/Zahlung:</strong> Stripe (Karte/SEPA) oder Monatsrechnung; Fälligkeit 14 Tage netto.</p>
+        <p><strong>Stornierung:</strong> bis 24h vor Termin kostenfrei; danach 50%; No-Show 100%.</p>
+        <p><strong>Haftung:</strong> versichert nach österr. Recht; keine Haftung für vorbestehende Schäden.</p>
+        <p><strong>Schlüssel/Access:</strong> Übergabe nach Protokoll; Verlustregelung gesondert.</p>
+        <p><strong>Gerichtsstand:</strong> Wien; es gilt österreichisches Recht.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Calculator
+    function calc(){
+      const units = +document.getElementById('units').value || 0;
+      const size = +document.getElementById('size').value || 0;
+      const turns = +document.getElementById('turns').value || 0;
+      const linen = document.getElementById('linen').checked;
+      const restock = document.getElementById('restock').checked;
+      const deep = document.getElementById('deep').checked;
+      let rate = 35; if(size>=30) rate=45; if(size>=45) rate=55; if(size>=60) rate=65; if(linen) rate+=7; if(restock) rate+=5; if(deep) rate*=1.2;
+      const monthlyTurns = Math.round(units * turns * 4);
+      const monthly = Math.round(monthlyTurns * rate);
+      document.getElementById('estUnits').textContent = units;
+      document.getElementById('estTurns').textContent = monthlyTurns;
+      document.getElementById('estRate').textContent = Math.round(rate);
+      document.getElementById('estMonthly').textContent = '€ ' + monthly.toLocaleString('de-AT');
+    }
+    document.getElementById('calcBtn').addEventListener('click', calc); calc();
+
+    // Contact (mock)
+    document.getElementById('contactForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const el=document.getElementById('contactStatus');
+      el.classList.remove('hidden'); setTimeout(()=>el.classList.add('hidden'), 4000);
+    });
+
+    // Booking + Payment
+    const BOOKINGS_KEY = 'app_bookings_v1';
+    const getBookings = () => JSON.parse(localStorage.getItem(BOOKINGS_KEY)||'[]');
+    const setBookings = (x) => localStorage.setItem(BOOKINGS_KEY, JSON.stringify(x));
+    function openPaymentLink(){
+      const url = window.APP_CONFIG?.PAYMENT_LINK_URL || '';
+      if(url){ window.open(url, '_blank'); return true; }
+      alert('Demo: Bitte Payment Link in APP_CONFIG.PAYMENT_LINK_URL eintragen.');
+      return false;
+    }
+    document.getElementById('bookingForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const unit = document.getElementById('bkUnit').value.trim();
+      const size = +document.getElementById('bkSize').value || 0;
+      const date = document.getElementById('bkDate').value;
+      const linen = document.getElementById('bkLinen').checked;
+      const deep = document.getElementById('bkDeep').checked;
+      let rate = 35; if(size>=30) rate=45; if(size>=45) rate=55; if(size>=60) rate=65; if(linen) rate+=7; if(deep) rate*=1.2;
+      const ok = openPaymentLink();
+      const status = document.getElementById('bkStatus');
+      const all = getBookings();
+      all.push({ id: 'B'+Date.now(), unit, size, date, linen, deep, status: ok? 'Bezahlt (Demo)': 'Gespeichert (Demo)'});
+      setBookings(all);
+      status.textContent = ok ? 'Zahlung geöffnet. Buchung gespeichert.' : 'Buchung gespeichert (Demo).';
+      status.classList.remove('hidden'); setTimeout(()=>status.classList.add('hidden'), 4000);
+      e.target.reset();
+    });
+
+    // Portal Auth (demo)
+    const AUTH_KEY='app_auth_email_v1';
+    document.getElementById('loginForm')?.addEventListener('submit', (e)=>{ e.preventDefault(); document.getElementById('loginMsg').classList.remove('hidden'); });
+    document.getElementById('demoLogin')?.addEventListener('click', ()=>{ localStorage.setItem(AUTH_KEY, (document.getElementById('plEmail').value||'demo@firma.at')); openPortal(); });
+    function openPortal(){
+      document.getElementById('portalAuth')?.classList.add('hidden');
+      document.getElementById('portalApp')?.classList.remove('hidden');
+      renderUnits(); renderBookingsList();
+    }
+    if(localStorage.getItem(AUTH_KEY)){ openPortal(); }
+
+    // Units CRUD
+    const UNITS_KEY='app_units_v1';
+    const getUnits = ()=> JSON.parse(localStorage.getItem(UNITS_KEY)||'[]');
+    const setUnits = (x)=> localStorage.setItem(UNITS_KEY, JSON.stringify(x));
+    document.getElementById('addUnit')?.addEventListener('click', ()=>{
+      const name=document.getElementById('unitName').value.trim(); if(!name) return;
+      const arr=getUnits(); arr.push({id:'U'+Date.now(), name}); setUnits(arr); document.getElementById('unitName').value=''; renderUnits();
+    });
+    function renderUnits(){
+      const ul=document.getElementById('unitList'); if(!ul) return; ul.innerHTML='';
+      getUnits().forEach(u=>{
+        const li=document.createElement('li'); li.className='flex items-center justify-between gap-2';
+        li.innerHTML=`<span>${u.name}</span><button data-id="${u.id}" class="text-xs underline">Entfernen</button>`;
+        li.querySelector('button').addEventListener('click',()=>{ setUnits(getUnits().filter(x=>x.id!==u.id)); renderUnits(); });
+        ul.appendChild(li);
+      });
+    }
+
+    // Portal bookings view
+    const getBookings2=()=> JSON.parse(localStorage.getItem(BOOKINGS_KEY)||'[]');
+    function renderBookingsList(){
+      const wrap=document.getElementById('bookingList'); if(!wrap) return; wrap.innerHTML='';
+      getBookings2().slice(-200).reverse().forEach(b=>{
+        const div=document.createElement('div'); div.className='p-4 rounded-xl border bg-white';
+        div.innerHTML=`<div class="flex flex-wrap justify-between gap-2"><div><strong>${b.unit||'-'}</strong> · ${b.size||'-'} m²<br/><span class="text-xs text-neutral-500">${b.date||'-'}</span></div><div class="text-sm">${b.status||'-'}</div></div>`;
+        wrap.appendChild(div);
+      });
+    }
+
+    // iCal Import
+    function parseICS(text){
+      const lines=text.split(/\\r?\\n/); const events=[]; let ev=null;
+      for(const l of lines){
+        if(l.startsWith('BEGIN:VEVENT')) ev={};
+        else if(l.startsWith('END:VEVENT')){ if(ev) events.push(ev); ev=null; }
+        else if(ev){
+          const idx=l.indexOf(':');
+          if(idx>-1){
+            const k=l.slice(0,idx), v=l.slice(idx+1);
+            if(k.startsWith('DTSTART')) ev.start=v;
+            if(k.startsWith('DTEND')) ev.end=v;
+            if(k==='SUMMARY') ev.summary=v;
+            if(k==='LOCATION') ev.location=v;
+          }
+        }
+      }
+      return events;
+    }
+    function icsToIso(d){ if(!d||d.length<13) return ''; const y=d.slice(0,4), mo=d.slice(4,6), da=d.slice(6,8), hh=d.slice(9,11), mm=d.slice(11,13); return `${y}-${mo}-${da} ${hh}:${mm}`; }
+    function addTurnoversFromEvents(events){
+      const b=getBookings2();
+      events.slice(0,200).forEach(ev=>{
+        const d=ev.end||ev.start||''; const iso=icsToIso(d); if(!iso) return;
+        b.push({ id:'I'+Math.random().toString(36).slice(2), unit: ev.location||ev.summary||'Apartment', size: 35, date: iso, status:'Geplant (iCal)' });
+      });
+      localStorage.setItem(BOOKINGS_KEY, JSON.stringify(b)); renderBookingsList();
+    }
+    document.getElementById('icalFetch')?.addEventListener('click', async ()=>{
+      const url=document.getElementById('icalUrl').value.trim(); if(!url) return;
+      try{
+        const res=await fetch(url); const txt=await res.text();
+        const ev=parseICS(txt); addTurnoversFromEvents(ev);
+        document.getElementById('icalList').textContent = `${ev.length} Ereignisse importiert.`;
+      }catch(e){
+        document.getElementById('icalList').textContent = 'Fehler beim Laden der iCal-URL.';
+      }
+    });
+    document.getElementById('icalFile')?.addEventListener('change', async (e)=>{
+      const file=e.target.files[0]; if(!file) return; const txt=await file.text();
+      const ev=parseICS(txt); addTurnoversFromEvents(ev);
+      document.getElementById('icalList').textContent = `${ev.length} Ereignisse importiert.`;
+    });
+
+    // Legal Modals
+    function openModal(id){ document.getElementById(id).style.display='flex'; }
+    function closeModal(id){ document.getElementById(id).style.display='none'; }
+    document.getElementById('openImpressum')?.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const c=window.APP_CONFIG?.COMPANY; const el=document.getElementById('impressumContent');
+      if(c&&el){ el.textContent = `${c.name}\\n${c.street}\\n${c.zipCity}\\n${c.country}\\nUID: ${c.uid}\\nE-Mail: ${c.email}\\nTel: ${c.phone}`; }
+      openModal('modalImpressum');
+    });
+    document.getElementById('openPrivacy')?.addEventListener('click', (e)=>{ e.preventDefault(); openModal('modalPrivacy'); });
+    document.getElementById('openTerms')?.addEventListener('click', (e)=>{ e.preventDefault(); openModal('modalTerms'); });
+  </script>
 </body>
 </html>

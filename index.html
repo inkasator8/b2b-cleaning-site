@@ -97,7 +97,7 @@
     </div>
   </header>
   <!-- SERVICES -->
-  <section id="services" class="py-20 pattern">
+  <section id="services" class="py-18 pattern">
     <div class="max-w-7xl mx-auto px-4">
       <div class="text-center">
         <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Leistungen für Kurzzeitvermietung</h2>
@@ -249,7 +249,6 @@
         <p class="mt-3 text-xs text-neutral-500">Payment Link in <code>APP_CONFIG.PAYMENT_LINK_URL</code> eintragen.</p>
       </div>
 
-      <div id="contact"></div>
       <form id="contactForm" class="card bg-white shadow-sm p-6 border border-black/5">
         <h3 class="font-bold text-lg">Kontakt & Angebotsanfrage</h3>
         <div class="grid sm:grid-cols-2 gap-4 text-sm mt-3">
@@ -546,21 +545,6 @@
       const ev=parseICS(txt); addTurnoversFromEvents(ev);
       document.getElementById('icalList').textContent = `${ev.length} Ereignisse importiert.`;
     });
-
-    // Company info placeholders
-    const companyElements = document.querySelectorAll('[data-company]');
-    const company = window.APP_CONFIG?.COMPANY;
-    if(companyElements.length && company){
-      const addressParts = [company.name, company.street, company.zipCity, company.country].filter(Boolean);
-      const contactParts = [];
-      if(company.uid) contactParts.push(`UID: ${company.uid}`);
-      if(company.email) contactParts.push(company.email);
-      if(company.phone) contactParts.push(company.phone);
-      const displayText = [addressParts.join(', '), contactParts.join(' · ')].filter(Boolean).join(' — ') || company.name || '';
-      companyElements.forEach((el)=>{
-        el.textContent = displayText;
-      });
-    }
 
     // Legal Modals
     function openModal(id){ document.getElementById(id).style.display='flex'; }
